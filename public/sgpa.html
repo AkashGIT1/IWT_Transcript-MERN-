@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SGPA Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        input { margin: 5px; padding: 5px; }
+        button { padding: 8px 12px; margin-top: 10px; cursor: pointer; }
+    </style>
+    <script>
+        function addSubject() {
+            let container = document.getElementById("subject-container");
+            let newInput = document.createElement("div");
+            newInput.innerHTML = `
+                <label>Subject: <input type="text" class="subject-name" placeholder="Subject Name"></label>
+                <label>Marks: <input type="number" class="marks" min="0" max="100"></label>
+                <br>`;
+            container.appendChild(newInput);
+        }
+
+        function calculateSGPA() {
+            let marks = document.querySelectorAll(".marks");
+            let subjectNames = document.querySelectorAll(".subject-name");
+
+            if (marks.length === 0) {
+                alert("Please add subjects and enter marks.");
+                return;
+            }
+
+            let total = 0;
+            marks.forEach(input => total += parseFloat(input.value) || 0);
+            let sgpa = (total / (marks.length * 10)).toFixed(2); // Assuming each subject max 10 marks
+            
+            let semester = new URLSearchParams(window.location.search).get('semester');
+            opener.document.getElementById("sgpa" + semester).value = sgpa;
+            opener.calculateCGPA();
+            window.close();
+        }
+    </script>
+</head>
+<body>
+    <h3>Calculate SGPA</h3>
+    <div id="subject-container">
+        <label>Subject: <input type="text" class="subject-name" placeholder="Subject Name"></label>
+        <label>Marks: <input type="number" class="marks" min="0" max="100"></label>
+        <br>
+    </div>
+    <button onclick="addSubject()">Add Subject</button>
+    <button onclick="calculateSGPA()">Submit SGPA</button>
+</body>
+</html>

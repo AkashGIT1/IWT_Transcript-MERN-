@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCA Transcript Request - NIT Kurukshetra</title>
+    <link rel="stylesheet" href="./index.css">
+    <script>
+        async function fetchTranscript() {
+            const rollNumber = document.getElementById("searchRollNumber").value.trim();
+            if (!rollNumber) {
+                alert("Please enter a roll number.");
+                return;
+            }
+    
+            // Make a request to the backend route for fetching the transcript by roll number
+            const response = await fetch(`/transcript/${rollNumber}`);
+            const transcript = await response.json();
+    
+            if (response.status === 404) {
+                document.getElementById("transcriptResult").innerHTML = "<p style='color: red;'>Transcript not found for Roll Number: " + rollNumber + "</p>";
+                return;
+            }
+    
+            // Display the transcript data
+            document.getElementById("transcriptResult").innerHTML = `
+                <h3>Student Transcript</h3>
+                <table border="1">
+                    <tr><th>Name</th><td>${transcript.name}</td></tr>
+                    <tr><th>Roll Number</th><td>${transcript.rollNumber}</td></tr>
+                    <tr><th>Email</th><td>${transcript.email}</td></tr>
+                    <tr><th>Year</th><td>${transcript.year}</td></tr>
+                    <tr><th>SGPA (Semesters)</th><td>${transcript.sgpa.join(", ")}</td></tr>
+                    <tr><th>CGPA</th><td>${transcript.cgpa.toFixed(2)}</td></tr>
+                </table>
+                <button onclick="window.print()">Print Transcript</button>
+            `;
+        }
+
+        function calculateCGPA() {
+            let sgpas = [];
+            for (let i = 1; i <= 6; i++) {
+                let sgpaInput = document.getElementById('sgpa' + i).value;
+                if (sgpaInput) {
+                    sgpas.push(parseFloat(sgpaInput));
+                }
+            }
+
+            if (sgpas.length > 0) {
+                let cgpa = sgpas.reduce((sum, val) => sum + val, 0) / sgpas.length;
+                document.getElementById("cgpa").innerText = "Calculated CGPA (up to " + sgpas.length + " semesters): " + cgpa.toFixed(2);
+            } else {
+                document.getElementById("cgpa").innerText = "Calculated CGPA: N/A";
+            }
+        }
+
+        function openSGPACalculator(sem) {
+            let url = `/sgpa-calculator?semester=${sem}`;
+            window.open(url, '_blank', 'width=600,height=400');
+        }
+
+        
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Request MCA Transcript - NIT Kurukshetra</h2>
+
+        <form action="/submit" method="POST">
+            <div class="info-student">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="rollNumber">Roll Number:</label>
+                    <input type="text" id="rollNumber" name="rollNumber" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+    
+                <div class="form-group">
+                    <label for="year">Year of Graduation:</label>
+                    <input type="text" id="year" name="year" required>
+                </div>
+            </div>
+            
+
+            <h3>Enter SGPA for Each Semester</h3>
+
+            <!-- SGPA Fields with Calculation Links -->
+            <div class="form-group sgpa-group">
+                <label for="sgpa1">Semester 1:</label>
+                <input type="number" step="0.01" id="sgpa1" name="sgpa1" oninput="calculateCGPA()">
+                <button type="button" onclick="openSGPACalculator(1)">Calculate SGPA</button>
+            </div>
+
+            <div class="form-group sgpa-group">
+                <label for="sgpa2">Semester 2:</label>
+                <input type="number" step="0.01" id="sgpa2" name="sgpa2" oninput="calculateCGPA()">
+                <button type="button" onclick="openSGPACalculator(2)">Calculate SGPA</button>
+            </div>
+
+            <div class="form-group sgpa-group">
+                <label for="sgpa3">Semester 3:</label>
+                <input type="number" step="0.01" id="sgpa3" name="sgpa3" oninput="calculateCGPA()">
+                <button type="button" onclick="openSGPACalculator(3)">Calculate SGPA</button>
+            </div>
+
+            <div class="form-group sgpa-group">
+                <label for="sgpa4">Semester 4:</label>
+                <input type="number" step="0.01" id="sgpa4" name="sgpa4" oninput="calculateCGPA()">
+                <button type="button" onclick="openSGPACalculator(4)">Calculate SGPA</button>
+            </div>
+
+            <div class="form-group sgpa-group">
+                <label for="sgpa5">Semester 5:</label>
+                <input type="number" step="0.01" id="sgpa5" name="sgpa5" oninput="calculateCGPA()">
+                <button type="button" onclick="openSGPACalculator(5)">Calculate SGPA</button>
+            </div>
+
+            <div class="form-group sgpa-group">
+                <label for="sgpa6">Semester 6:</label>
+                <input type="number" step="0.01" id="sgpa6" name="sgpa6" oninput="calculateCGPA()">
+                <button type="button" onclick="openSGPACalculator(6)">Calculate SGPA</button>
+            </div>
+
+            <h3 id="cgpa">Calculated CGPA: N/A</h3>
+            
+            <!-- Add this form and button to allow searching for a transcript by Roll Number -->
+<div>
+    <label for="searchRollNumber">Enter Roll Number:</label>
+    <input type="text" id="searchRollNumber" placeholder="e.g. MCA202301">
+    <button onclick="fetchTranscript()">Get Transcript</button>
+</div>
+<div id="transcriptResult" style="margin-top: 20px;"></div>
+
+
+            <button type="submit" class="submit-btn">Submit Request</button>
+        </form>
+    </div>
+
+</body>
+</html>
