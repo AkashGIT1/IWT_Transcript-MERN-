@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCA Transcript Request - NIT Kurukshetra</title>
+    <title>Akash Transcript - NIT Kurukshetra</title>
     <link rel="stylesheet" href="./index.css">
     <script>
-        async function fetchTranscript() {
+        async function getMArksheet(){
+            let url=`/get-marksheet?rollNumber`;
+            window.location.href = url;
+
+        }
+        async function fetchTranscript(event) {
+            event.preventDefault();
             const rollNumber = document.getElementById("searchRollNumber").value.trim();
             if (!rollNumber) {
                 alert("Please enter a roll number.");
@@ -24,16 +30,35 @@
     
             // Display the transcript data
             document.getElementById("transcriptResult").innerHTML = `
-                <h3>Student Transcript</h3>
-                <table border="1">
-                    <tr><th>Name</th><td>${transcript.name}</td></tr>
-                    <tr><th>Roll Number</th><td>${transcript.rollNumber}</td></tr>
-                    <tr><th>Email</th><td>${transcript.email}</td></tr>
-                    <tr><th>Year</th><td>${transcript.year}</td></tr>
-                    <tr><th>SGPA (Semesters)</th><td>${transcript.sgpa.join(", ")}</td></tr>
-                    <tr><th>CGPA</th><td>${transcript.cgpa.toFixed(2)}</td></tr>
-                </table>
-                <button onclick="window.print()">Print Transcript</button>
+                 <h3 style="text-align: center; font-family: Arial, sans-serif; color: #333;">Student Transcript</h3>
+        <table style="width: 60%; margin: 20px auto; border-collapse: collapse; font-family: Arial, sans-serif; background-color: rgba(255, 243, 179); opacity:1 !important;">
+            <tr>
+                <th style="padding: 8px; text-align: left; font-size: 14px; color: #555; border: 1px solid #ddd;">Name</th>
+                <td style="padding: 8px; font-size: 14px; color: #555; border: 1px solid #ddd;">${transcript.name}</td>
+            </tr>
+            <tr>
+                <th style="padding: 8px; text-align: left; font-size: 14px; color: #555; border: 1px solid #ddd;">Roll Number</th>
+                <td style="padding: 8px; font-size: 14px; color: #555; border: 1px solid #ddd;">${transcript.rollNumber}</td>
+            </tr>
+            <tr>
+                <th style="padding: 8px; text-align: left; font-size: 14px; color: #555; border: 1px solid #ddd;">Email</th>
+                <td style="padding: 8px; font-size: 14px; color: #555; border: 1px solid #ddd;">${transcript.email}</td>
+            </tr>
+            <tr>
+                <th style="padding: 8px; text-align: left; font-size: 14px; color: #555; border: 1px solid #ddd;">Year</th>
+                <td style="padding: 8px; font-size: 14px; color: #555; border: 1px solid #ddd;">${transcript.year}</td>
+            </tr>
+            <tr>
+                <th style="padding: 8px; text-align: left; font-size: 14px; color: #555; border: 1px solid #ddd;">SGPA (Semesters)</th>
+                <td style="padding: 8px; font-size: 14px; color: #555; border: 1px solid #ddd;">${transcript.sgpa.join(", ")}</td>
+            </tr>
+            <tr>
+                <th style="padding: 8px; text-align: left; font-size: 14px; color: #555; border: 1px solid #ddd;">CGPA</th>
+                <td style="padding: 8px; font-size: 14px; color: #555; border: 1px solid #ddd;">${transcript.cgpa.toFixed(2)}</td>
+            </tr>
+        </table>
+        <button onclick="window.print()" style="display: block; margin: 20px auto; background-color: #ffcc00; color: white; padding: 8px 16px; border: none; cursor: pointer; font-size: 14px; border-radius: 5px;">Print Transcript</button>
+   
             `;
         }
 
@@ -65,26 +90,26 @@
 <body>
 
     <div class="container">
-        <h2>Request MCA Transcript - NIT Kurukshetra</h2>
+        <center><h2 style="color: rgb(0, 0, 0); font-size:40px;">Transcript - NIT Kurukshetra</h2></center>
 
         <form action="/submit" method="POST">
             <div class="info-student">
-                <div class="form-group">
+                <div class="form-group-1">
                     <label for="name">Full Name:</label>
                     <input type="text" id="name" name="name" required>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group-1">
                     <label for="rollNumber">Roll Number:</label>
                     <input type="text" id="rollNumber" name="rollNumber" required>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group-1">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
                 </div>
     
-                <div class="form-group">
+                <div class="form-group-1">
                     <label for="year">Year of Graduation:</label>
                     <input type="text" id="year" name="year" required>
                 </div>
@@ -93,57 +118,61 @@
 
             <h3>Enter SGPA for Each Semester</h3>
 
-            <!-- SGPA Fields with Calculation Links -->
+
             <div class="form-group sgpa-group">
                 <label for="sgpa1">Semester 1:</label>
-                <input type="number" step="0.01" id="sgpa1" name="sgpa1" oninput="calculateCGPA()">
+                <input type="number" step="0.1" id="sgpa1" name="sgpa1" oninput="calculateCGPA()">
                 <button type="button" onclick="openSGPACalculator(1)">Calculate SGPA</button>
             </div>
 
             <div class="form-group sgpa-group">
                 <label for="sgpa2">Semester 2:</label>
-                <input type="number" step="0.01" id="sgpa2" name="sgpa2" oninput="calculateCGPA()">
+                <input type="number" step="0.1" id="sgpa2" name="sgpa2" oninput="calculateCGPA()">
                 <button type="button" onclick="openSGPACalculator(2)">Calculate SGPA</button>
             </div>
 
             <div class="form-group sgpa-group">
                 <label for="sgpa3">Semester 3:</label>
-                <input type="number" step="0.01" id="sgpa3" name="sgpa3" oninput="calculateCGPA()">
+                <input type="number" step="0.1" id="sgpa3" name="sgpa3" oninput="calculateCGPA()">
                 <button type="button" onclick="openSGPACalculator(3)">Calculate SGPA</button>
             </div>
 
             <div class="form-group sgpa-group">
                 <label for="sgpa4">Semester 4:</label>
-                <input type="number" step="0.01" id="sgpa4" name="sgpa4" oninput="calculateCGPA()">
+                <input type="number" step="0.1" id="sgpa4" name="sgpa4" oninput="calculateCGPA()">
                 <button type="button" onclick="openSGPACalculator(4)">Calculate SGPA</button>
             </div>
 
             <div class="form-group sgpa-group">
                 <label for="sgpa5">Semester 5:</label>
-                <input type="number" step="0.01" id="sgpa5" name="sgpa5" oninput="calculateCGPA()">
+                <input type="number" step="0.1" id="sgpa5" name="sgpa5" oninput="calculateCGPA()">
                 <button type="button" onclick="openSGPACalculator(5)">Calculate SGPA</button>
             </div>
 
             <div class="form-group sgpa-group">
                 <label for="sgpa6">Semester 6:</label>
-                <input type="number" step="0.01" id="sgpa6" name="sgpa6" oninput="calculateCGPA()">
+                <input type="number" step="0.1" id="sgpa6" name="sgpa6" oninput="calculateCGPA()">
                 <button type="button" onclick="openSGPACalculator(6)">Calculate SGPA</button>
             </div>
 
             <h3 id="cgpa">Calculated CGPA: N/A</h3>
             
-            <!-- Add this form and button to allow searching for a transcript by Roll Number -->
-<div>
+
+<div class="form-group">
     <label for="searchRollNumber">Enter Roll Number:</label>
-    <input type="text" id="searchRollNumber" placeholder="e.g. MCA202301">
-    <button onclick="fetchTranscript()">Get Transcript</button>
+    <input type="text" id="searchRollNumber" placeholder="e.g. 523410019">
+    <button class="t-button" onclick="fetchTranscript(event)">Overall Result</button>
 </div>
-<div id="transcriptResult" style="margin-top: 20px;"></div>
-
-
-            <button type="submit" class="submit-btn">Submit Request</button>
+<div id="transcriptResult" style="margin-top: 20px;;"></div>
+            <button type="submit" class="submit-btn" style="width:90%; color:black;font-size:large;margin-left:50px">Submit Request</button>
+<div class="mark-btn">
+    <button type="button" onclick="getMArksheet(2)" style="margin-left: 150px;">Get Marksheet</button>
+</div>
+           
         </form>
+        
     </div>
+    
 
 </body>
 </html>

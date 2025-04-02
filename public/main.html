@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Measure</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Performance Measure</h1>
+        <hr>
+
+        <form action="/cal" method="post">
+            <!-- Student Information -->
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" placeholder="Full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fname">Father's Name:</label>
+                <input type="text" id="fname" name="fname" placeholder="Father name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="rollno">Roll Number:</label>
+                <input type="number" id="rollno" name="rollno" 
+                       placeholder="Roll No for registration / Or Fill Roll number here to get student profile" required>
+            </div>
+
+            <div class="form-group">
+                <label for="coursename">Course Name:</label>
+                <input type="text" id="coursename" name="coursename" placeholder="Course name" required>
+            </div>
+
+            <!-- Subjects -->
+            <h3>Subject Marks</h3>
+            
+            <div class="subject-row">
+                <input type="text" name="sub1" placeholder="First Subject name" >
+                <input type="number" name="marks1" placeholder="Marks" min="0" max="100">
+            </div>
+
+            <div class="subject-row">
+                <input type="text" name="sub2" placeholder="Second Subject name" >
+                <input type="number" name="marks2" placeholder="Marks" min="0" max="100" >
+            </div>
+
+            <div class="subject-row">
+                <input type="text" name="sub3" placeholder="Third Subject name">
+                <input type="number" name="marks3" placeholder="Marks" min="0" max="100" >
+            </div>
+
+            <div class="subject-row">
+                <input type="text" name="sub4" placeholder="Fourth Subject name">
+                <input type="number" name="marks4" placeholder="Marks" min="0" max="100">
+            </div>
+
+            <div class="subject-row">
+                <input type="text" name="sub5" placeholder="Fifth Subject name" >
+                <input type="number" name="marks5" placeholder="Marks" min="0" max="100" >
+            </div>
+
+            <!-- Buttons -->
+            <div class="btn-container">
+                <button type="submit" class="btn btn-success">Register Marksheet</button>
+            </div>
+        </form>
+        <form action="/view-profile" method="get" class="new-class">
+            <input type="number" name="rollno" placeholder="Enter Roll Number" required>
+            <button type="submit">View Profile</button>
+        </form>
+    </div>
+
+    <button onclick="openPreviousPage()" class="back-btn">Go Back</button>
+
+    <script>
+        function openPreviousPage() {
+            window.location.href = "/index.html";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marksheet</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-margin {
+                margin: 0;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-300">
+    <div class="h-full w-1/2 bg-white m-auto border-1 border-blue-500 overflow-hidden print-margin">
+        <h1 class="text-3xl text-red-700 my-4 text-center">National Institute of Technology, Kurukshetra</h1>
+        <img class="h-[150px] mx-auto" src="/images/logo.png" alt="NIT Kurukshetra Logo">
+        <h2 class="text-xl text-black text-center my-2 font-bold">RESULT-DETAILED MARKS CARD</h2>
+        <h2 class="text-xl text-black text-center my-2" id="courseName"></h2>
+
+        <div class="flex flex-wrap mt-8 justify-between mx-28">
+            <div>
+                <h1 class="text-xl my-4 font-bold">Name - <span class="text-blue-500 font-medium" id="studentName"></span></h1>
+                <h1 class="text-xl mb-4 font-bold">Father Name - <span class="text-blue-500 font-medium" id="fatherName"></span></h1>
+                <h1 class="text-xl font-bold">Roll Number - <span class="text-blue-500 font-medium" id="rollNumber"></span></h1>
+            </div>
+            <!-- <div>
+                <img class="w-full h-32" src="/images/download.png" alt="Student Photo">
+            </div> -->
+        </div>
+
+        <h3 class="text-black text-center my-2 font-bold">DETAILS OF MARKS</h3>
+
+        <!-- Table -->
+        <table class="w-[90%] my-2 mx-auto border border-gray-300 bg-white shadow-md rounded-lg">
+            <thead>
+                <tr class="bg-gray-200 text-gray-700">
+                    <th class="border p-2">Sr. No</th>
+                    <th class="border p-2">PAPERS NAME</th>
+                    <th class="border p-2">Marks Obtained</th>
+                    <th class="border p-2">Minimum Pass Marks</th>
+                    <th class="border p-2">Maximum Marks</th>
+                    <th class="border p-2">Grade Points</th>
+                </tr>
+            </thead>
+            <tbody id="marksTableBody">
+                <!-- JavaScript will insert rows here -->
+            </tbody>
+        </table>
+
+        <h1 class="text-black text-xl font-bold my-4 mx-32">CGPA: <span class="text-blue-500" id="cgpa"></span></h1>
+
+        <!-- Footer -->
+        <div class="flex flex-wrap mx-10 justify-between mt-32 mb-16">
+            <div>
+                <h1 class="text-black text-2xl my-2">NIT Kurukshetra</h1>
+                <h2 class="text-black text-2xl">Date - <span id="date"></span></h2>
+            </div>
+            <div>
+                <img class="w-32" src="/images/sign.png" alt="Signature">
+                <h1 class="text-black text-2xl">Controller of Examinations</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center no-print">
+        <button onclick="window.print()" class="bg-blue-500 text-white px-4 py-2 rounded-md mt-4">Print Marksheet</button>
+        <button onclick="goBack()" class="bg-gray-500 text-white px-4 py-2 rounded-md mt-4 ml-4">Go Back</button>
+    </div>
+
+    <!-- JavaScript Code -->
+    <script>
+        // Grade Points calculation function
+        function getGradePoints(marks) {
+            if (marks >= 85) return 10;
+            if (marks >= 75) return 9;
+            if (marks >= 65) return 8;
+            if (marks >= 45) return 6;
+            if (marks >= 35) return 4;
+            return 0;
+        }
+
+        // Format current date
+        function formatDate(date) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        // Go back function
+        function goBack() {
+            window.history.back();
+        }
+
+        // Main function to load marksheet data
+        document.addEventListener("DOMContentLoaded", async function () {
+            // Extract roll number from URL query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const rollNumber = urlParams.get("rollno");
+        
+            if (!rollNumber) {
+                alert("Invalid roll number!");
+                return;
+            }
+        
+            try {
+                // Fetch data from backend
+                const response = await fetch(`/marksheet/${rollNumber}`);
+                if (!response.ok) throw new Error("Failed to fetch marksheet");
+        
+                const user = await response.json();
+        
+                if (!user.sub || user.sub.length === 0) {
+                    throw new Error("No subject data available");
+                }
+        
+                // Populate student details
+                document.getElementById("studentName").textContent = user.name || "N/A";
+                document.getElementById("fatherName").textContent = user.fname || "N/A";
+                document.getElementById("rollNumber").textContent = user.rollno || "N/A";
+                document.getElementById("courseName").textContent = `Course Name - (${user.course || "N/A"})`;
+        
+                // Populate table
+                const tableBody = document.getElementById("marksTableBody");
+                tableBody.innerHTML = ""; // Clear table
+        
+                let totalGp = 0;
+                user.sub.forEach((subject, index) => {
+                    if (!subject.subject || subject.marks == null) {
+                        console.error("Invalid subject data:", subject);
+                        return;
+                    }
+        
+                    const gp = getGradePoints(subject.marks);
+                    totalGp += gp;
+        
+                    tableBody.innerHTML += `
+                        <tr class="text-center">
+                            <td class="border p-2">${index + 1}</td>
+                            <td class="border p-2">${subject.subject}</td>
+                            <td class="border p-2">${subject.marks}</td>
+                            <td class="border p-2">35</td>
+                            <td class="border p-2">100</td>
+                            <td class="border p-2">${gp}</td>
+                        </tr>
+                    `;
+                });
+        
+                // Compute CGPA
+                const cgpa = (totalGp / user.sub.length).toFixed(2);
+                document.getElementById("cgpa").textContent = isNaN(cgpa) ? "N/A" : cgpa;
+        
+                // Set date
+                document.getElementById("date").textContent = formatDate(new Date());
+            } catch (error) {
+                console.error("Error fetching marksheet:", error);
+                alert("Error loading marksheet. Please try again.");
+                document.getElementById("marksTableBody").innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-red-500 p-4">Error loading marksheet: ${error.message}</td>
+                    </tr>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

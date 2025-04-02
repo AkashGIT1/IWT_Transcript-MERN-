@@ -1,0 +1,96 @@
+/* profile.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.profile-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.student-card {
+    background-color: #e8f4f8;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 5px solid #3498db;
+}
+
+.student-name {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.student-detail {
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #3498db;
+}
+
+.subjects-list {
+    margin-top: 15px;
+    padding-left: 20px;
+}
+
+.subjects-list li {
+    margin-bottom: 5px;
+}
+
+.action-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+    background-color: #2980b9;
+}
+
+.back-btn {
+    display: block;
+    margin: 30px auto 0;
+    background-color: #7f8c8d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+}
+
+.back-btn:hover {
+    background-color: #95a5a6;
+}
+
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+}

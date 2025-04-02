@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
     <title>SGPA Calculator</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        input { margin: 5px; padding: 5px; }
-        button { padding: 8px 12px; margin-top: 10px; cursor: pointer; }
-    </style>
+    <link rel="stylesheet" href="./sgpa.css">
     <script>
         function addSubject() {
             let container = document.getElementById("subject-container");
@@ -24,12 +20,12 @@
 
             if (marks.length === 0) {
                 alert("Please add subjects and enter marks.");
-                return;
+                return 0.00;
             }
 
             let total = 0;
             marks.forEach(input => total += parseFloat(input.value) || 0);
-            let sgpa = (total / (marks.length * 10)).toFixed(2); // Assuming each subject max 10 marks
+            let sgpa = (total / (marks.length * 9)).toFixed(2);
             
             let semester = new URLSearchParams(window.location.search).get('semester');
             opener.document.getElementById("sgpa" + semester).value = sgpa;

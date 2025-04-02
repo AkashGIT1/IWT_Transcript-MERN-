@@ -11,14 +11,13 @@ body {
 
 }
 .container {
-    background: rgb(146, 255, 253);
+    background: rgb(146, 255, 253,0.9);
     padding: 20px;
     width: 60%;
-    min-height: 600px;
+    min-height: 800px;
     margin: 20px auto;
     border-radius: 10px;
     box-shadow: 0px 0px 10px #aaa;
-    opacity: 0.9;
     align-content: center;
     align-self: center;
 }
@@ -28,11 +27,87 @@ body {
     margin: 15px auto;
     font-size: 20px;
 }
-.info-student input{
-    .info-student input {
-        display: inline-block;
-        margin-right: 10px; /* Optional, adds spacing between inputs */
+.info-student {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+}
+
+.form-group-1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-group-1 label {
+    margin-bottom: 5px; 
+}
+
+.form-group-1 input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+    .form-group-1 {
+        width: 48%; 
     }
-    
-    
+}
+
+.form-group input,button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-left: 25px;
+}
+.form-group button{
+   background-color: #ffcc00;
+}
+
+.submit-btn{
+    background-color: rgb(45, 255, 66);
+}
+
+.profile-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #333;
+    margin-bottom: 10px;
+}
+.transcript-table {
+    width: 60%;
+    margin: auto;
+    border-collapse: collapse;
+    background-color: rgba(255, 243, 179, 0.9);
+}
+.transcript-table th, .transcript-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+.print-btn {
+    display: block;
+    margin: 20px auto;
+    background-color: #ffcc00;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.mark-btn {
+    margin-left: 240px;
+}
+.mark-btn button{
+    margin: 50px auto;
+    min-width: 100px;
+    min-height: 100px;
+     color:black;
+     font-size:large;
+     background-color: #ffcc00;
+     
 }
